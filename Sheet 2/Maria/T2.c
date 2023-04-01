@@ -7,6 +7,40 @@
 void swap(int *xp, int *yp);
 void sort(int arr[], int size);
 
+void* meanCalc(void * arg) {
+    // gets the array
+    int *a = (int *) arg;
+    // saves space for the calculated result
+    float *result = (float *) malloc(sizeof(float));
+
+    // calculates the mean
+    for (int i = 0; i < SIZE; i++) {
+		*result += a[i];
+	}
+	*result /= SIZE;
+
+    // returns the mean
+    return result;
+}
+
+void* medianCalc(void * arg) {
+    // gets the array
+    int *a = (int *) arg;
+    // saves space for the calculated result
+    float *result = (float *) malloc(sizeof(float));
+
+    // calculates the median
+    if (SIZE % 2 == 0) {
+		*result = (a[SIZE/2] + a[SIZE/2 + 1]) / 2;
+	} else {
+		*result = a[SIZE/2 + 1];
+	}
+	*result = *result / 2.0;
+
+    // returns the median
+    return result;
+}
+
 int main (){
 
         int arr[SIZE];    
@@ -20,6 +54,22 @@ int main (){
         // One thread should calculate the median
         // The other thread should calculate the mean
 	// One thread should display the result (mean, median)
+    float *mean;
+    float *median;
+
+    // creating the threads
+    pthread_t mean_thread, median_thread;
+    
+    pthread_create(&mean_thread, NULL, meanCalc, &arr);
+    pthread_create(&median_thread, NULL, medianCalc, &arr);
+
+    // waits for the threads to be finished
+    pthread_join(mean_thread, (void *) &mean);
+    pthread_join(median_thread, (void *) &median);
+
+    // prints the results
+    printf("Calculated mean: %f\n", *mean);
+    printf("Calculated median: %f\n", *median);
 }
 
 void swap(int *xp, int *yp)
