@@ -1,0 +1,2 @@
+Concurrency = single CPU with multiple threads
+Parallelism = multicore CPU, multiple threads can work simultaneously
