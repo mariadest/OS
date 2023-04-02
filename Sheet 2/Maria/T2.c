@@ -6,6 +6,7 @@
 
 void swap(int *xp, int *yp);
 void sort(int arr[], int size);
+int gettid();
 
 void* meanCalc(void * arg) {
     // gets the array
@@ -18,6 +19,10 @@ void* meanCalc(void * arg) {
 		*result += a[i];
 	}
 	*result /= SIZE;
+
+    // printing the thread id
+    pid_t tid = gettid();
+    printf("TID of the mean-Thread: %i\n", tid);
 
     // returns the mean
     return result;
@@ -36,6 +41,10 @@ void* medianCalc(void * arg) {
 		*result = a[SIZE/2 + 1];
 	}
 	*result = *result / 2.0;
+
+    // printign the thread id
+    pid_t tid = gettid();
+    printf("TID of the median-Thread: %i\n", tid);
 
     // returns the median
     return result;
